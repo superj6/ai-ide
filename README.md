@@ -2,6 +2,8 @@
 
 A modern C++ IDE with AI-powered code completion and a beautiful beach-inspired theme.
 
+<img src="https://jgon.net/static/images/ai-ide-screenshot.png" height="500px">
+
 ## Directory Structure
 
 ```
