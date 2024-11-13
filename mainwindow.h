@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QProcess>
+#include <QActionGroup>
+#include "completionwidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -22,6 +24,7 @@ private slots:
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processError(QProcess::ProcessError error);
     void readCompilerOutput();
+    void setCompletionModel();
 
 private:
     void createActions();
@@ -32,6 +35,7 @@ private:
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
     void runCompiledProgram();
+    void createModelMenu();
 
     QTextEdit *editor;
     QTextEdit *compilerOutput;
@@ -39,6 +43,9 @@ private:
     QProcess *process;
     bool isUntitled;
     bool isCompiling;
+    CompletionWidget *completionWidget;
+    QMenu *modelMenu;
+    QActionGroup *modelActionGroup;
 };
 
 #endif

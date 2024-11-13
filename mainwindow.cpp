@@ -115,6 +115,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(process, &QProcess::readyReadStandardOutput, this, &MainWindow::readCompilerOutput);
     connect(process, &QProcess::readyReadStandardError, this, &MainWindow::readCompilerOutput);
 
+    // Initialize completion widget
+    completionWidget = new CompletionWidget(editor);
+
     createActions();
     createMenus();
 }
@@ -164,7 +167,37 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
-    // Menus are created in createActions()
+    menuBar()->setStyleSheet("QMenuBar { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #81d4fa, stop:1 #4fc3f7); }");
+    createModelMenu();
+}
+
+void MainWindow::createModelMenu()
+{
+    modelMenu = menuBar()->addMenu("AI Model");
+    modelActionGroup = new QActionGroup(this);
+    modelActionGroup->setExclusive(true);
+
+    for (const QString &modelName : CompletionWidget::AVAILABLE_MODELS) {
+        QAction *action = modelMenu->addAction(modelName);
+        action->setCheckable(true);
+        action->setData(modelName);
+        modelActionGroup->addAction(action);
+        
+        if (modelName == completionWidget->currentModel()) {
+            action->setChecked(true);
+        }
+    }
+
+    connect(modelActionGroup, &QActionGroup::triggered, this, &MainWindow::setCompletionModel);
+}
+
+void MainWindow::setCompletionModel()
+{
+    QAction *action = qobject_cast<QAction*>(sender());
+    if (action) {
+        QString modelName = action->data().toString();
+        completionWidget->setModel(modelName);
+    }
 }
 
 void MainWindow::newFile()

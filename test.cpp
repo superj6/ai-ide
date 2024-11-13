@@ -65,5 +65,9 @@ int main() {
         printSquare(i);
     }
 
+    for(int i = 6; i <= 10; i++){
+      printSquare(i);
+    }
+
     return 0;
 }

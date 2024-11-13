@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -7,10 +7,15 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    completionwidget.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    completionwidget.h
 
 FORMS += \
     mainwindow.ui
+
+RESOURCES += \
+    resources.qrc
