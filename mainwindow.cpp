@@ -12,27 +12,98 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), isUntitled(true), isCompiling(false)
 {
-    setWindowTitle("C++ IDE");
+    setWindowTitle("Beach IDE");
     resize(800, 600);
+
+    // Set the beach theme stylesheet
+    QString styleSheet = R"(
+        QMainWindow {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                      stop:0 #e0f7fa,
+                                      stop:0.3 #b2ebf2,
+                                      stop:0.6 #ffe0b2,
+                                      stop:1 #ffcc80);
+        }
+        QMenuBar {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                      stop:0 #81d4fa,
+                                      stop:1 #4fc3f7);
+            color: #003366;
+            border-bottom: 1px solid #29b6f6;
+            padding: 4px;
+        }
+        QMenuBar::item:selected {
+            background: #0288d1;
+            color: white;
+        }
+        QMenu {
+            background: #e1f5fe;
+            border: 1px solid #81d4fa;
+        }
+        QMenu::item:selected {
+            background: #4fc3f7;
+            color: white;
+        }
+        QTextEdit {
+            background: rgba(255, 255, 255, 220);
+            border: 1px solid #b2ebf2;
+            border-radius: 4px;
+            padding: 2px;
+            selection-background-color: #4fc3f7;
+            font-family: "Courier";
+        }
+        QSplitter::handle {
+            background: #81d4fa;
+            height: 4px;
+        }
+        QMessageBox {
+            background: #e1f5fe;
+        }
+        QMessageBox QPushButton {
+            background: #4fc3f7;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            padding: 5px 15px;
+        }
+        QMessageBox QPushButton:hover {
+            background: #29b6f6;
+        }
+        QFileDialog {
+            background: #e1f5fe;
+        }
+        QStatusBar {
+            background: #81d4fa;
+            color: #003366;
+        }
+    )";
+    setStyleSheet(styleSheet);
 
     // Create central widget with splitter
     QWidget *centralWidget = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout;
     QSplitter *splitter = new QSplitter(Qt::Vertical);
     
-    // Setup editor
+    // Setup editor with beach theme colors
     editor = new QTextEdit;
     editor->setFontFamily("Courier");
     editor->setFontPointSize(12);
+    editor->setStyleSheet("QTextEdit { background: rgba(255, 255, 255, 200); }");
     splitter->addWidget(editor);
 
-    // Setup compiler output
+    // Setup compiler output with beach theme colors
     compilerOutput = new QTextEdit;
     compilerOutput->setReadOnly(true);
     compilerOutput->setFontFamily("Courier");
     compilerOutput->setFontPointSize(10);
+    compilerOutput->setStyleSheet("QTextEdit { background: rgba(255, 255, 255, 180); }");
     splitter->addWidget(compilerOutput);
 
+    // Set splitter properties
+    splitter->setHandleWidth(4);
+    splitter->setStyleSheet("QSplitter::handle { background: #81d4fa; }");
+    
+    layout->setContentsMargins(8, 8, 8, 8);
     layout->addWidget(splitter);
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
@@ -164,7 +235,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
     if (isUntitled) {
         shownName = "untitled.cpp";
     }
-    setWindowTitle(QString("%1[*] - C++ IDE").arg(shownName));
+    setWindowTitle(QString("%1[*] - Beach IDE").arg(shownName));
 }
 
 bool MainWindow::maybeSave()
