@@ -35,9 +35,17 @@ MainWindow::MainWindow(QWidget *parent)
     compilerOutput->setStyleSheet(
         "QTextEdit {"
         "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
-        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Deep ocean gradient
-        "  color: #E2E8F0;"            // Soft white
-        "  border: 1px solid #3d4d5e;"  // Sandy border
+        "                             stop:0 #1a2634, stop:0.3 #2a3d50,"    // Deep ocean gradient
+        "                             stop:0.7 #3d4d5e, stop:1 #4a5d70);"   // Sandy ocean floor
+        "  background-image: repeating-linear-gradient("                     // Wave pattern
+        "    0deg,"
+        "    rgba(210, 180, 140, 0.02),"  // Lighter sandy waves
+        "    rgba(210, 180, 140, 0.02) 8px,"
+        "    transparent 8px,"
+        "    transparent 16px"
+        "  );"
+        "  color: #E2E8F0;"              // Soft white text
+        "  border: 1px solid #d2b48c;"    // Sandy border
         "  border-radius: 4px;"
         "  padding: 8px;"
         "  selection-background-color: #4a5d70;"  // Ocean highlight
@@ -52,11 +60,13 @@ MainWindow::MainWindow(QWidget *parent)
     setStyleSheet(
         "QMainWindow {"
         "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
-        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Deep ocean gradient
+        "                             stop:0 #1a2634, stop:0.4 #2a3d50,"  // Deep ocean gradient
+        "                             stop:0.6 #3d4d5e, stop:1 #4a5d70);"  // Sandy ocean floor
         "}"
         "QSplitter::handle {"
         "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
-        "                             stop:0 #3d4d5e, stop:1 #4a5d70);"  // Sandy gradient
+        "                             stop:0 #d2b48c, stop:0.3 #deb887,"   // Sandy colors
+        "                             stop:0.7 #d2b48c, stop:1 #deb887);"  // with variation
         "  height: 2px;"
         "}"
         "QMessageBox {"
@@ -65,9 +75,10 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         "QMenuBar {"
         "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
-        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Ocean gradient
+        "                             stop:0 #1a2634, stop:0.4 #2a3d50,"
+        "                             stop:0.6 #3d4d5e, stop:1 #4a5d70);"
         "  color: #E2E8F0;"
-        "  border-bottom: 1px solid #3d4d5e;"  // Sandy border
+        "  border-bottom: 2px solid #d2b48c;"  // Sandy border
         "}"
         "QMenuBar::item:selected {"
         "  background: #4a5d70;"  // Ocean highlight
@@ -75,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
         "QMenu {"
         "  background-color: #1a2634;"  // Deep ocean
         "  color: #E2E8F0;"
-        "  border: 1px solid #3d4d5e;"  // Sandy border
+        "  border: 1px solid #d2b48c;"  // Sandy border
         "}"
         "QMenu::item:selected {"
         "  background-color: #4a5d70;"  // Ocean highlight
@@ -86,7 +97,9 @@ MainWindow::MainWindow(QWidget *parent)
         "  margin: 0px;"
         "}"
         "QScrollBar::handle:vertical {"
-        "  background: #3d4d5e;"        // Sandy color
+        "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+        "                             stop:0 #d2b48c, stop:0.5 #deb887,"   // Sandy scrollbar
+        "                             stop:1 #d2b48c);"
         "  min-height: 20px;"
         "  border-radius: 6px;"
         "}"
@@ -99,7 +112,9 @@ MainWindow::MainWindow(QWidget *parent)
         "  margin: 0px;"
         "}"
         "QScrollBar::handle:horizontal {"
-        "  background: #3d4d5e;"        // Sandy color
+        "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+        "                             stop:0 #d2b48c, stop:0.5 #deb887,"   // Sandy scrollbar
+        "                             stop:1 #d2b48c);"
         "  min-width: 20px;"
         "  border-radius: 6px;"
         "}"
@@ -127,13 +142,21 @@ void MainWindow::setupEditor()
     QFont font("Courier", 12);
     editor->setFont(font);
 
-    // Set up the editor widget style with beach at night colors
+    // Set up the editor widget style with beach at night colors and wave pattern
     editor->setStyleSheet(
         "QTextEdit {"
         "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
-        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Deep ocean gradient
-        "  color: #E2E8F0;"            // Soft white
-        "  border: 1px solid #3d4d5e;"  // Sandy border
+        "                             stop:0 #1a2634, stop:0.3 #2a3d50,"    // Deep ocean gradient
+        "                             stop:0.7 #3d4d5e, stop:1 #4a5d70);"   // Sandy ocean floor
+        "  background-image: repeating-linear-gradient("                     // Wave pattern
+        "    0deg,"
+        "    rgba(210, 180, 140, 0.03),"  // Sandy color with low opacity
+        "    rgba(210, 180, 140, 0.03) 10px,"
+        "    transparent 10px,"
+        "    transparent 20px"
+        "  );"
+        "  color: #E2E8F0;"              // Soft white text
+        "  border: 1px solid #d2b48c;"    // Sandy border
         "  border-radius: 4px;"
         "  padding: 8px;"
         "  selection-background-color: #4a5d70;"  // Ocean highlight
@@ -249,7 +272,8 @@ void MainWindow::createMenus()
     menuBar()->setStyleSheet(
         "QMenuBar {"
         "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
-        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Dark gradient
+        "                             stop:0 #1a2634, stop:0.4 #2a3d50,"
+        "                             stop:0.6 #3d4d5e, stop:1 #4a5d70);"
         "  color: #E2E8F0;"  // Soft white text
         "  padding: 4px;"
         "}"

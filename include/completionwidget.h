@@ -47,7 +47,7 @@ private:
     QTimer *completionTimer;
     QString model;
     static const int CONTEXT_CHARS = 500;  // Characters to consider before cursor
-    static const int COMPLETION_DELAY = 500;  // Milliseconds to wait before requesting
+    static const int COMPLETION_DELAY = 750;  // Milliseconds to wait before requesting
 };
 
 #endif // COMPLETIONWIDGET_H

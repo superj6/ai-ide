@@ -264,13 +264,19 @@ bool CompletionWidget::eventFilter(QObject *obj, QEvent *event)
                     // Cancel completion
                     hideCompletion();
                     return true;
+                } else {
+                    // Hide completion on any other key press
+                    hideCompletion();
                 }
             }
             
-            // Start completion timer on relevant keys
+            // Reset and restart completion timer on relevant keys
+            completionTimer->stop();
             if (keyEvent->key() == Qt::Key_Space || 
                 keyEvent->key() == Qt::Key_Return || 
-                keyEvent->key() == Qt::Key_Period) {
+                keyEvent->key() == Qt::Key_Period ||
+                keyEvent->key() == Qt::Key_Greater ||
+                keyEvent->key() == Qt::Key_Colon) {
                 completionTimer->start(COMPLETION_DELAY);
             }
         }
