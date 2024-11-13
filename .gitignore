@@ -1,1 +1,21 @@
 .env
+
+# Build artifacts
+*.o
+*.out
+CppIDE
+
+# Qt-generated files
+moc_*
+qrc_*
+ui_*.h
+.qmake.stash
+Makefile
+
+# IDE specific
+*.user
+*.autosave
+
+# Backup files
+*~
+*.bak
