@@ -1,5 +1,8 @@
 .env
 
+# Build directory
+build/
+
 # Build artifacts
 *.o
 *.out
