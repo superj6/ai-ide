@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QActionGroup>
 #include "completionwidget.h"
+#include "highlighter.h"
 
 class MainWindow : public QMainWindow
 {
@@ -25,6 +26,7 @@ private slots:
     void processError(QProcess::ProcessError error);
     void readCompilerOutput();
     void setCompletionModel();
+    void documentWasModified();
 
 private:
     void createActions();
@@ -46,6 +48,7 @@ private:
     CompletionWidget *completionWidget;
     QMenu *modelMenu;
     QActionGroup *modelActionGroup;
+    Highlighter *highlighter;
 };
 
 #endif

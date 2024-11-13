@@ -130,8 +130,13 @@ QString CompletionWidget::getContextAroundCursor()
 QString CompletionWidget::createPrompt(const QString &context)
 {
     return QString(
-        "You are a C++ code completion assistant. Complete the code based on the context. "
-        "Provide ONLY the completion, no explanations. Context:\n\n%1").arg(context);
+        "You are an expert C++ code completion assistant. Analyze the context and provide a completion that:\n"
+        "1. Matches the coding style in the context\n"
+        "2. Uses modern C++ features when appropriate\n"
+        "3. Considers variable names and types from the context\n"
+        "4. Completes the current statement or block\n"
+        "5. Is concise and follows best practices\n\n"
+        "Provide ONLY the completion code, no explanations. Context:\n\n%1").arg(context);
 }
 
 void CompletionWidget::requestCompletion()

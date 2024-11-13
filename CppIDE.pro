@@ -8,11 +8,13 @@ TEMPLATE = app
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    completionwidget.cpp
+    completionwidget.cpp \
+    highlighter.cpp
 
 HEADERS += \
     mainwindow.h \
-    completionwidget.h
+    completionwidget.h \
+    highlighter.h
 
 FORMS += \
     mainwindow.ui

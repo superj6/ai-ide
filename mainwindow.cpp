@@ -8,105 +8,105 @@
 #include <QSplitter>
 #include <QTemporaryFile>
 #include <QTextStream>
+#include <QDir>
+#include <QStatusBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), isUntitled(true), isCompiling(false)
 {
     setWindowTitle("Beach IDE");
-    resize(800, 600);
+    resize(1024, 768);
 
-    // Set the beach theme stylesheet
-    QString styleSheet = R"(
-        QMainWindow {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                      stop:0 #e0f7fa,
-                                      stop:0.3 #b2ebf2,
-                                      stop:0.6 #ffe0b2,
-                                      stop:1 #ffcc80);
-        }
-        QMenuBar {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                                      stop:0 #81d4fa,
-                                      stop:1 #4fc3f7);
-            color: #003366;
-            border-bottom: 1px solid #29b6f6;
-            padding: 4px;
-        }
-        QMenuBar::item:selected {
-            background: #0288d1;
-            color: white;
-        }
-        QMenu {
-            background: #e1f5fe;
-            border: 1px solid #81d4fa;
-        }
-        QMenu::item:selected {
-            background: #4fc3f7;
-            color: white;
-        }
-        QTextEdit {
-            background: rgba(255, 255, 255, 220);
-            border: 1px solid #b2ebf2;
-            border-radius: 4px;
-            padding: 2px;
-            selection-background-color: #4fc3f7;
-            font-family: "Courier";
-        }
-        QSplitter::handle {
-            background: #81d4fa;
-            height: 4px;
-        }
-        QMessageBox {
-            background: #e1f5fe;
-        }
-        QMessageBox QPushButton {
-            background: #4fc3f7;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            padding: 5px 15px;
-        }
-        QMessageBox QPushButton:hover {
-            background: #29b6f6;
-        }
-        QFileDialog {
-            background: #e1f5fe;
-        }
-        QStatusBar {
-            background: #81d4fa;
-            color: #003366;
-        }
-    )";
-    setStyleSheet(styleSheet);
-
-    // Create central widget with splitter
-    QWidget *centralWidget = new QWidget;
+    // Create central widget and layout
+    QWidget *centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
     QVBoxLayout *layout = new QVBoxLayout;
     QSplitter *splitter = new QSplitter(Qt::Vertical);
     
-    // Setup editor with beach theme colors
+    // Setup editor with beach at night theme colors
     editor = new QTextEdit;
-    editor->setFontFamily("Courier");
-    editor->setFontPointSize(12);
-    editor->setStyleSheet("QTextEdit { background: rgba(255, 255, 255, 200); }");
+    setupEditor();
     splitter->addWidget(editor);
 
-    // Setup compiler output with beach theme colors
+    // Setup compiler output with beach at night theme colors
     compilerOutput = new QTextEdit;
     compilerOutput->setReadOnly(true);
-    compilerOutput->setFontFamily("Courier");
-    compilerOutput->setFontPointSize(10);
-    compilerOutput->setStyleSheet("QTextEdit { background: rgba(255, 255, 255, 180); }");
+    compilerOutput->setFont(QFont("Courier", 12));
+    compilerOutput->setStyleSheet(
+        "QTextEdit {"
+        "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Deep ocean gradient
+        "  color: #E2E8F0;"            // Soft white
+        "  border: 1px solid #3d4d5e;"  // Sandy border
+        "  border-radius: 4px;"
+        "  padding: 8px;"
+        "  selection-background-color: #4a5d70;"  // Ocean highlight
+        "}"
+    );
     splitter->addWidget(compilerOutput);
 
-    // Set splitter properties
-    splitter->setHandleWidth(4);
-    splitter->setStyleSheet("QSplitter::handle { background: #81d4fa; }");
-    
-    layout->setContentsMargins(8, 8, 8, 8);
     layout->addWidget(splitter);
     centralWidget->setLayout(layout);
-    setCentralWidget(centralWidget);
+
+    // Set the overall application style
+    setStyleSheet(
+        "QMainWindow {"
+        "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Deep ocean gradient
+        "}"
+        "QSplitter::handle {"
+        "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+        "                             stop:0 #3d4d5e, stop:1 #4a5d70);"  // Sandy gradient
+        "  height: 2px;"
+        "}"
+        "QMessageBox {"
+        "  background-color: #1a2634;"  // Deep ocean
+        "  color: #E2E8F0;"            // Soft white
+        "}"
+        "QMenuBar {"
+        "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Ocean gradient
+        "  color: #E2E8F0;"
+        "  border-bottom: 1px solid #3d4d5e;"  // Sandy border
+        "}"
+        "QMenuBar::item:selected {"
+        "  background: #4a5d70;"  // Ocean highlight
+        "}"
+        "QMenu {"
+        "  background-color: #1a2634;"  // Deep ocean
+        "  color: #E2E8F0;"
+        "  border: 1px solid #3d4d5e;"  // Sandy border
+        "}"
+        "QMenu::item:selected {"
+        "  background-color: #4a5d70;"  // Ocean highlight
+        "}"
+        "QScrollBar:vertical {"
+        "  background: #1a2634;"        // Deep ocean
+        "  width: 12px;"
+        "  margin: 0px;"
+        "}"
+        "QScrollBar::handle:vertical {"
+        "  background: #3d4d5e;"        // Sandy color
+        "  min-height: 20px;"
+        "  border-radius: 6px;"
+        "}"
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
+        "  height: 0px;"
+        "}"
+        "QScrollBar:horizontal {"
+        "  background: #1a2634;"        // Deep ocean
+        "  height: 12px;"
+        "  margin: 0px;"
+        "}"
+        "QScrollBar::handle:horizontal {"
+        "  background: #3d4d5e;"        // Sandy color
+        "  min-width: 20px;"
+        "  border-radius: 6px;"
+        "}"
+        "QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {"
+        "  width: 0px;"
+        "}"
+    );
 
     // Initialize process
     process = new QProcess(this);
@@ -120,6 +120,85 @@ MainWindow::MainWindow(QWidget *parent)
 
     createActions();
     createMenus();
+}
+
+void MainWindow::setupEditor()
+{
+    QFont font("Courier", 12);
+    editor->setFont(font);
+
+    // Set up the editor widget style with beach at night colors
+    editor->setStyleSheet(
+        "QTextEdit {"
+        "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
+        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Deep ocean gradient
+        "  color: #E2E8F0;"            // Soft white
+        "  border: 1px solid #3d4d5e;"  // Sandy border
+        "  border-radius: 4px;"
+        "  padding: 8px;"
+        "  selection-background-color: #4a5d70;"  // Ocean highlight
+        "}"
+    );
+
+    // Create syntax highlighter
+    highlighter = new Highlighter(editor->document());
+
+    // Connect document modification signal
+    connect(editor->document(), &QTextDocument::contentsChanged,
+            this, &MainWindow::documentWasModified);
+}
+
+void MainWindow::documentWasModified()
+{
+    setWindowModified(editor->document()->isModified());
+}
+
+bool MainWindow::saveFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (file.open(QFile::WriteOnly | QFile::Text)) {
+        QTextStream out(&file);
+        out << editor->toPlainText();
+        file.close();
+        
+        setCurrentFile(fileName);
+        editor->document()->setModified(false);
+        statusBar()->showMessage(tr("File saved"), 2000);
+        return true;
+    }
+    QMessageBox::warning(this, tr("Application"),
+                        tr("Cannot write file %1:\n%2.")
+                        .arg(QDir::toNativeSeparators(fileName),
+                             file.errorString()));
+    return false;
+}
+
+void MainWindow::loadFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (file.open(QFile::ReadOnly | QFile::Text)) {
+        QTextStream in(&file);
+        editor->setPlainText(in.readAll());
+        file.close();
+        
+        setCurrentFile(fileName);
+        editor->document()->setModified(false);
+        statusBar()->showMessage(tr("File loaded"), 2000);
+    }
+}
+
+void MainWindow::setCurrentFile(const QString &fileName)
+{
+    currentFile = fileName;
+    isUntitled = fileName.isEmpty();
+    editor->document()->setModified(false);
+    setWindowModified(false);
+    
+    QString shownName = currentFile;
+    if (isUntitled) {
+        shownName = "untitled.cpp";
+    }
+    setWindowTitle(QString("%1[*] - Beach IDE").arg(QFileInfo(shownName).fileName()));
 }
 
 MainWindow::~MainWindow()
@@ -167,7 +246,17 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
-    menuBar()->setStyleSheet("QMenuBar { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #81d4fa, stop:1 #4fc3f7); }");
+    menuBar()->setStyleSheet(
+        "QMenuBar {"
+        "  background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+        "                             stop:0 #1a2634, stop:1 #2a3d50);"  // Dark gradient
+        "  color: #E2E8F0;"  // Soft white text
+        "  padding: 4px;"
+        "}"
+        "QMenuBar::item:selected {"
+        "  background: #4a5d70;"  // Slate highlight
+        "}"
+    );
     createModelMenu();
 }
 
@@ -233,42 +322,6 @@ void MainWindow::saveFileAs()
     if (!fileName.isEmpty()) {
         saveFile(fileName);
     }
-}
-
-bool MainWindow::saveFile(const QString &fileName)
-{
-    QFile file(fileName);
-    if (file.open(QFile::WriteOnly | QFile::Text)) {
-        QTextStream out(&file);
-        out << editor->toPlainText();
-        setCurrentFile(fileName);
-        return true;
-    }
-    QMessageBox::warning(this, "Application", "Cannot write file " + fileName);
-    return false;
-}
-
-void MainWindow::loadFile(const QString &fileName)
-{
-    QFile file(fileName);
-    if (file.open(QFile::ReadOnly | QFile::Text)) {
-        QTextStream in(&file);
-        editor->setPlainText(in.readAll());
-        setCurrentFile(fileName);
-    }
-}
-
-void MainWindow::setCurrentFile(const QString &fileName)
-{
-    currentFile = fileName;
-    isUntitled = fileName.isEmpty();
-    setWindowModified(false);
-    
-    QString shownName = currentFile;
-    if (isUntitled) {
-        shownName = "untitled.cpp";
-    }
-    setWindowTitle(QString("%1[*] - Beach IDE").arg(shownName));
 }
 
 bool MainWindow::maybeSave()

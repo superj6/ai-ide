@@ -69,5 +69,11 @@ int main() {
       printSquare(i);
     }
 
+    for(int i = 11; i <= 15; i++){
+      std::cout << i << " squared is " << i * i << std::endl;
+    }
+
+    std::cout << "Finished testing modern C++ features." << std::endl;
+
     return 0;
 }
